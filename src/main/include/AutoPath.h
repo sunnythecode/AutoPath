@@ -1,4 +1,5 @@
-#include <frc/kinematics/DifferentialDriveKinematics.h>
+
+#include<frc/kinematics/DifferentialDriveKinematics.h>
 #include <frc/controller/RamseteController.h>
 #include<frc/kinematics/DifferentialDriveOdometry.h>
 #include <frc/kinematics/DifferentialDriveWheelSpeeds.h>
@@ -11,8 +12,9 @@
 #include <frc/Filesystem.h>
 #include <frc/trajectory/TrajectoryUtil.h>
 #include <frc/trajectory/Trajectory.h>
-#include <wpi/fs.h>
 #include <frc/Timer.h>
+#include <pathplanner/lib/PathPlanner.h>
+
 
 #include <vector>
 
@@ -22,7 +24,7 @@ class AutoPath {
     public:
     double b = 2.0;
     double zeta = 0.7;
-    double track_width = 40; //in
+    double track_width = 29 / 12; //ft
     //w is change in gyro use Getrate
     frc::Timer timer;
 
@@ -35,9 +37,10 @@ class AutoPath {
 
     frc::RamseteController r_ctr;
 
-    frc::Trajectory trajectory;
+    //frc::Trajectory trajectory;
+    pathplanner::PathPlannerTrajectory examplePath;
 
-    frc::DifferentialDriveKinematics drive_kinematics{units::inch_t{track_width}};
+    frc::DifferentialDriveKinematics drive_kinematics{units::foot_t(track_width)};
     private:
     
 

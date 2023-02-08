@@ -8,9 +8,10 @@
 #include <vector>
 
 #include <frc/TimedRobot.h>
-#include <frc/smartdashboard/SendableChooser.h>
 #include <frc/XboxController.h>
 #include <rev/CANSparkMax.h>
+#include <rev/SparkMaxPIDController.h>
+#include <rev/RelativeEncoder.h>
 #include "AutoPath.h"
 
 #define lMotorLeaderID 1

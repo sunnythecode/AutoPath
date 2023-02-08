@@ -5,6 +5,7 @@
 #include "Robot.h"
 #include "gyro.h"
 #include <fmt/core.h>
+#include <cmath>
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
@@ -15,12 +16,14 @@ void Robot::RobotInit() {
   lMotor->SetInverted(false);
   rMotor->SetInverted(true);
 
-  lEncoder.SetPositionConversionFactor((180 / M_PI) * 64 / 12);
-  rEncoder.SetPositionConversionFactor((180 / M_PI) * 64 / 12);
+  lEncoder.SetPositionConversionFactor((180 / M_PI) * 12 / 64);
+  rEncoder.SetPositionConversionFactor((180 / M_PI) * 12 / 64);
+
+  lEncoder.SetVelocityConversionFactor(((12 / 64) * 60) * (GCEM_PI / 3) ); // Motor rpm -> Wheel rps -> wheel ft/s
+  rEncoder.SetVelocityConversionFactor(((12 / 64) * 60) * (GCEM_PI / 3) );
 
   lMotorFollower->Follow(*lMotor, false);
   rMotorFollower->Follow(*rMotor, false);
-
   lMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   lMotorFollower->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
   rMotor->SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
@@ -38,6 +41,8 @@ void Robot::RobotInit() {
   rPID.SetI(PIDIntegral);
   rPID.SetD(PIDDerivative);
   rPID.SetIZone(PIDIZone);
+
+  //lPID.SetPositionPIDWrappingEnabled
 }
 
 /**
@@ -69,6 +74,8 @@ void Robot::AutonomousInit() {
 
 void Robot::AutonomousPeriodic() {
   std::vector<double> wheel_speeds = pathModule.Periodic(Gyro.ahrs->GetAngle(), lEncoder.GetPosition(), rEncoder.GetPosition());
+  //frc::SmartDashboard::PutNumber(wheel_speeds.at(0));
+  //frc::SmartDashboard::PutNumber(wheel_speeds.at(1));
   lPID.SetReference(wheel_speeds.at(0), rev::CANSparkMax::ControlType::kVelocity);
   rPID.SetReference(wheel_speeds.at(1), rev::CANSparkMax::ControlType::kVelocity);
 }
