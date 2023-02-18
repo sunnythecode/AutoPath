@@ -3,7 +3,7 @@
 
 void AutoPath::Init() {
     timer.Start();
-    getPaths();
+    //getPaths();
 }
 
 std::vector<double> AutoPath::Periodic(double angle, double left_enc, double right_enc) {

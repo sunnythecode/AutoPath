@@ -14,6 +14,9 @@
 #include <frc/trajectory/Trajectory.h>
 #include <frc/Timer.h>
 #include <pathplanner/lib/PathPlanner.h>
+#include <pathplanner/lib/PathPlannerTrajectory.h>
+#include <pathplanner/lib/PathConstraints.h>
+
 
 
 #include <vector>

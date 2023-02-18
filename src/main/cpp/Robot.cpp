@@ -6,21 +6,23 @@
 #include "gyro.h"
 #include <fmt/core.h>
 #include <cmath>
+#include "AHRS.h"
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
-gyro Gyro;
+//gyro Gyro;
 
 void Robot::RobotInit() {
-  Gyro = gyro();
+  
+  //Gyro = gyro();
   lMotor->SetInverted(false);
   rMotor->SetInverted(true);
 
   lEncoder.SetPositionConversionFactor((180 / M_PI) * 12 / 64);
   rEncoder.SetPositionConversionFactor((180 / M_PI) * 12 / 64);
 
-  lEncoder.SetVelocityConversionFactor(((12 / 64) * 60) * (GCEM_PI / 3) ); // Motor rpm -> Wheel rps -> wheel ft/s
-  rEncoder.SetVelocityConversionFactor(((12 / 64) * 60) * (GCEM_PI / 3) );
+  //lEncoder.SetVelocityConversionFactor( (12 * M_PI) / (64 * 60 * 3)); // Motor rpm -> Wheel rps -> wheel ft/s
+  //rEncoder.SetVelocityConversionFactor((12 * M_PI) / (64 * 60 * 3));
 
   lMotorFollower->Follow(*lMotor, false);
   rMotorFollower->Follow(*rMotor, false);
@@ -73,11 +75,11 @@ void Robot::AutonomousInit() {
 }
 
 void Robot::AutonomousPeriodic() {
-  std::vector<double> wheel_speeds = pathModule.Periodic(Gyro.ahrs->GetAngle(), lEncoder.GetPosition(), rEncoder.GetPosition());
-  //frc::SmartDashboard::PutNumber(wheel_speeds.at(0));
-  //frc::SmartDashboard::PutNumber(wheel_speeds.at(1));
-  lPID.SetReference(wheel_speeds.at(0), rev::CANSparkMax::ControlType::kVelocity);
-  rPID.SetReference(wheel_speeds.at(1), rev::CANSparkMax::ControlType::kVelocity);
+  std::vector<double> wheel_speeds = pathModule.Periodic(ahrs->GetAngle(), lEncoder.GetPosition(), rEncoder.GetPosition());
+  frc::SmartDashboard::PutNumber("left", wheel_speeds.at(0));
+  frc::SmartDashboard::PutNumber("right", wheel_speeds.at(1));
+  //lPID.SetReference(wheel_speeds.at(0), rev::CANSparkMax::ControlType::kVelocity);
+  //rPID.SetReference(wheel_speeds.at(1), rev::CANSparkMax::ControlType::kVelocity);
 }
 
 void Robot::TeleopInit() {}

@@ -13,6 +13,7 @@
 #include <rev/SparkMaxPIDController.h>
 #include <rev/RelativeEncoder.h>
 #include "AutoPath.h"
+#include "AHRS.h"
 
 #define lMotorLeaderID 1
 #define lMotorFollowerID 2
@@ -43,6 +44,7 @@ class Robot : public frc::TimedRobot {
   frc::XboxController* ctr = new frc::XboxController(0);
 
   AutoPath pathModule;
+  AHRS* ahrs = new AHRS(frc::SerialPort::kMXP);
 
   rev::CANSparkMax* lMotor = new rev::CANSparkMax(lMotorLeaderID, rev::CANSparkMax::MotorType::kBrushless);
   rev::CANSparkMax* lMotorFollower = new rev::CANSparkMax(lMotorFollowerID, rev::CANSparkMax::MotorType::kBrushless);
